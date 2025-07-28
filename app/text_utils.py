@@ -3,35 +3,48 @@ from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 import ollama
 
-def generate_textual_explanation(pred_class, gradcam_info, lime_info, occlusion_info):
-    prompt = f"""
-    Erstelle eine kurze, ärztlich verständliche Erklärung für die Diagnose.
+def generate_textual_explanation(pred_class, gradcam_info, lime_info, occlusion_info, use_gpt=True):
+    # Lesbare Diagnose-Beschreibungen
+    diagnosis_map = {
+        "colon_aca": "colon adenocarcinoma, a type of cancer that develops in the lining of the colon",
+        "colon_n": "benign colon tissue without signs of cancer",
+        "lung_aca": "lung adenocarcinoma, a type of cancer that originates in the glandular cells of the lung",
+        "lung_scc": "lung squamous cell carcinoma, a form of lung cancer affecting squamous cells",
+        "lung_n": "benign lung tissue without signs of cancer",
+    }
 
-    Diagnose: {pred_class}
-    Grad-CAM Hauptregionen: {gradcam_info}
-    LIME Fokus: {lime_info}
-    Occlusion Sensitivity: {occlusion_info}
+    diagnosis_text = diagnosis_map.get(pred_class, f"condition: {pred_class}")
 
-    Antworte in 4-5 Sätzen, wie ein Arzt es einem Kollegen erklären würde. Answer in English I only want to see the answer and not the thought process
-    """
+    if use_gpt:
+        try:
+            prompt = f"""
+            Explain the following diagnosis in 2-3 sentences for a doctor colleague.
 
-    response = ollama.chat(
-        model="deepseek-r1:8b",  # Lokales Modell, das du installiert hast
-        messages=[{"role": "user", "content": prompt}]
+            Diagnosis: {diagnosis_text}
+            Grad-CAM highlights: {gradcam_info}
+            LIME focus: {lime_info}
+            Occlusion sensitivity: {occlusion_info}
+
+            Make it concise, medically correct, and easy to understand.
+            """
+
+            response = ollama.chat(
+                model="deepseek-r1:8b",
+                messages=[{"role": "user", "content": prompt}]
+            )
+            return response["message"]["content"]
+
+        except Exception:
+            pass  # Falls GPT nicht funktioniert, nutze Fallback
+
+    # Dynamische Fallback-Erklärung
+    return (
+        f"The diagnosis is **{diagnosis_text}**. "
+        f"The Grad-CAM model emphasizes {gradcam_info}, highlighting key areas for examination. "
+        f"LIME focuses on {lime_info}, pointing out relevant cell patterns or abnormalities. "
+        f"However, accuracy may decrease if certain areas are not fully visible, "
+        f"as occlusion sensitivity shows that the model relies on {occlusion_info} for correct classification."
     )
-    return response["message"]["content"]
-
-def generate_text_explanation(label, probability):
-    text = f"Das Modell diagnostiziert **{label}** mit einer Wahrscheinlichkeit von {probability:.2%}. "
-
-    if "Adenocarcinoma" in label:
-        text += "Die KI erkannte typische Muster für ein Adenokarzinom in auffälligen Regionen."
-    elif "Squamous" in label:
-        text += "Das Modell identifizierte verdickte epitheliale Strukturen, die für Plattenepithelkarzinome typisch sind."
-    else:
-        text += "Die erkannten Muster entsprechen gesunden Strukturen ohne Anzeichen von Karzinomen."
-
-    return text
 
 def generate_pdf_report(original_img, gradcam_img, lime_img, occlusion_img, explanation_text):
     buffer = BytesIO()

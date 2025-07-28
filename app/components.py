@@ -1,7 +1,7 @@
 import streamlit as st
 from PIL import Image
 from xai_utils import gradcam_explain, lime_explain, occlusion_sensitivity_analysis
-from text_utils import generate_text_explanation, generate_pdf_report, generate_textual_explanation
+from text_utils import generate_pdf_report, generate_textual_explanation
 import torch
 
 def landing_page(navigate):
@@ -129,7 +129,6 @@ def landing_page(navigate):
             st.button(f"{title} wählen")
 
 def dashboard(model, device, transform, all_classes, class_labels):
-    # Sidebar für Upload
     st.sidebar.header("📤 Bild hochladen")
     uploaded_file = st.sidebar.file_uploader("Wähle ein Bild", type=["jpg", "jpeg", "png"])
 
@@ -137,7 +136,6 @@ def dashboard(model, device, transform, all_classes, class_labels):
         image = Image.open(uploaded_file).convert("RGB")
         st.sidebar.image(image, caption="Vorschau", use_container_width=True)
 
-        # Modellvorhersage
         img_tensor = transform(image).unsqueeze(0).to(device)
         with torch.no_grad():
             outputs = model(img_tensor)
@@ -148,7 +146,6 @@ def dashboard(model, device, transform, all_classes, class_labels):
         readable_label = class_labels[class_key]
         probability = probs[0][pred_class].item()
 
-        # XAI-Bilder generieren
         gradcam_img = gradcam_explain(model, img_tensor, model.layer3[-1], pred_class)
         lime_img = lime_explain(model, image, transform, pred_class, device)
         occlusion_img = occlusion_sensitivity_analysis(model, image, transform, pred_class, device)
@@ -158,14 +155,18 @@ def dashboard(model, device, transform, all_classes, class_labels):
         occlusion_info = "Genauigkeit sinkt bei Abdeckung bestimmter Bereiche"
 
         explanation_text = generate_textual_explanation(
-            readable_label, gradcam_info, lime_info, occlusion_info
+            class_key,
+            gradcam_info="central tissue structures within the tumor",
+            lime_info="noticeable cell patterns or irregularities",
+            occlusion_info="critical regions of the image",
+            use_gpt=False
         )
 
         st.markdown(f"### 🩺 Diagnose: **{readable_label}** ({probability:.2%})")
 
         # 2x2 kompakteres Grid
-        col1, col2 = st.columns([1.2, 1])  # Erstes Row
-        col3, col4 = st.columns([1.2, 1])  # Zweites Row
+        col1, col2 = st.columns([1.2, 1])  
+        col3, col4 = st.columns([1.2, 1])
 
         with col1:
             st.markdown("#### 📄 Erklärung")
