@@ -98,7 +98,7 @@ def landing_page(navigate):
     st.markdown(
     """
     <div class="demo-box">
-        <h3 style="color:#D0DDFE;">💻 Schau dir das Dashboard in Aktion an:</h3>
+        <h3 style="color:#D0DDFE;">Schau dir das Dashboard in Aktion an:</h3>
     </div>
     """,
     unsafe_allow_html=True,
@@ -159,7 +159,7 @@ def dashboard(model, device, transform, all_classes, class_labels):
             gradcam_info="central tissue structures within the tumor",
             lime_info="noticeable cell patterns or irregularities",
             occlusion_info="critical regions of the image",
-            use_gpt=False
+            use_gpt=True
         )
 
         st.markdown(f"### 🩺 Diagnose: **{readable_label}** ({probability:.2%})")

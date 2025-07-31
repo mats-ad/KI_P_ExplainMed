@@ -79,9 +79,9 @@ with col1:
     st.markdown("<div class='navbar-title'>🩺 ExplainMed</div>", unsafe_allow_html=True)
 with col2:
     c1, c2 = st.columns(2)
-    if c1.button("🏠 Startseite", key="home-btn"):
+    if c1.button(" Startseite ", key="home-btn"):
         st.session_state.page = "landing"
-    if c2.button("📊 Dashboard", key="dash-btn"):
+    if c2.button(" Dashboard ", key="dash-btn"):
         st.session_state.page = "dashboard"
 
 st.markdown("---")
