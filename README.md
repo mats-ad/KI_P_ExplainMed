@@ -4,6 +4,10 @@ ExplainMed ist ein Prototyp für ein KI-basiertes Diagnose-Dashboard, das medizi
 
 ---
 
+## Künstliche Intelligenz Prüfung
+
+Diese Repository ist immernoch ein Work in Progress ich werde in der ReadMe makieren wenn es fertig ist.
+
 ## 🚀 Features
 
 - ✅ **Bild-Upload über Sidebar**
@@ -130,13 +134,3 @@ def generate_textual_explanation(pred_class, gradcam_info, lime_info, occlusion_
     )
     return response["message"]["content"]
 ```
-
----
-
-## 💰 Preisstruktur (Business Plan Vorschlag)
-
-| Plan           | Preis       | Features                                                   |
-| -------------- | ----------- | ---------------------------------------------------------- |
-| **Starter**    | 49 €/Monat  | 100 Diagnosen, Basis-XAI, PDF-Reports                      |
-| **Pro**        | 199 €/Monat | Unbegrenzte Diagnosen, Erweiterte XAI, Teamzugang, Support |
-| **Enterprise** | Auf Anfrage | API-Integration, On-Premise, Priorisierter Support         |
