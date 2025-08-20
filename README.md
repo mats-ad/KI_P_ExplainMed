@@ -2,6 +2,11 @@
 
 ExplainMed ist ein Prototyp für ein KI-basiertes Diagnose-Dashboard, das medizinische Bilder klassifiziert und die Vorhersagen mithilfe von **Explainable AI (Grad-CAM, LIME, Occlusion Sensitivity)** visuell und textuell begründet. Ziel ist es, Ärztinnen und Ärzten verständliche KI-Ergebnisse bereitzustellen, um Vertrauen und Transparenz bei KI-gestützten Diagnosen zu erhöhen.
 
+## Beschreibung für die Prüfung
+
+- Mein Businessplan befindet sich in der Datei Businessplan_KI_Mats_Adel.pdf
+- Das Projekt ist fertig und kann bewertet werden.
+
 ## Screenshots Prototyp
 
 ![LandingPage1](Screenshots_Prototyp/Landingpage1.png)
