@@ -2,6 +2,14 @@
 
 ExplainMed ist ein Prototyp für ein KI-basiertes Diagnose-Dashboard, das medizinische Bilder klassifiziert und die Vorhersagen mithilfe von **Explainable AI (Grad-CAM, LIME, Occlusion Sensitivity)** visuell und textuell begründet. Ziel ist es, Ärztinnen und Ärzten verständliche KI-Ergebnisse bereitzustellen, um Vertrauen und Transparenz bei KI-gestützten Diagnosen zu erhöhen.
 
+## Screenshots Prototyp
+
+![LandingPage1](Screenshots_Prototyp/Landingpage1.png)
+![LandingPage2](Screenshots_Prototyp/Landingpage2.png)
+![LandingPage3](Screenshots_Prototyp/Landingpage3.png)
+![Dashboard1](Screenshots_Prototyp/Dashboard1.png)
+![Dashboard2](Screenshots_Prototyp/Dashboard2.png)
+
 ---
 
 ## Künstliche Intelligenz Prüfung
@@ -134,3 +142,11 @@ def generate_textual_explanation(pred_class, gradcam_info, lime_info, occlusion_
     )
     return response["message"]["content"]
 ```
+
+## Prototyp
+
+![Alternativtext](Screenshots_Prototyp/Landingpage1.png)
+![Alternativtext](Screenshots_Prototyp/Landingpage2.png)
+![Alternativtext](Screenshots_Prototyp/Landingpage3.png)
+![Alternativtext](Screenshots_Prototyp/Dashboard1.png)
+![Alternativtext](Screenshots_Prototyp/Dashboard2.png)
